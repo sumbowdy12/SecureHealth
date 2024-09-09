@@ -1,4 +1,3 @@
-import { fetchMatches } from "./lib/data";
 import { decryptData, encryptData } from "./utils/crypto";
 import HealthTable from "./healthTable";
 export default async function Home() {
