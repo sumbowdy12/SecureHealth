@@ -1,6 +1,6 @@
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { encryptData, decryptData } from './utils/crypto';
+import { encryptData } from './utils/crypto';
 export default async function healthTable(){
     type TObj = {
         patientId: string,

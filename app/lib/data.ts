@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
-import { Match, MATCHID
+import { Match
 
  } from './definitions';
 export async function fetchMatches() {
