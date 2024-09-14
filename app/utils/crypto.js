@@ -13,3 +13,4 @@ export const decryptData = (ciphertext) => {
   const bytes = CryptoJS.AES.decrypt(ciphertext, key,{iv:iv});
   return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 };
+
