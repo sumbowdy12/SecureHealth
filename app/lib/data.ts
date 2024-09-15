@@ -16,3 +16,17 @@ export async function fetchPatients() {
       throw new Error('Failed to fetch data.');
     }
   }
+  export async function fetchPatientData(patient: string){
+    noStore();
+    try{
+      const data = await sql<Patient>`SELECT * 
+      FROM patients
+      WHERE
+      patientid::text =  ${`${patient}`}`;
+
+      return data.rows[0];
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch patient data');
+    }
+  }

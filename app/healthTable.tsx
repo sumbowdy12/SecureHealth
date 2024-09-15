@@ -1,6 +1,7 @@
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchPatients } from './lib/data';
+import Link from 'next/link';
 export default async function healthTable(){
    
   const patients = await fetchPatients();
@@ -19,7 +20,7 @@ export default async function healthTable(){
         <tbody>
           {patients.map((patients) => (
             <tr key={patients.patientid}>
-              <td>{patients.patientid}</td>
+              <td><Link href={ "/" + patients.patientid + "/edit"}>{patients.patientid}</Link></td>
               <td>{patients.age}</td>
               <td>{patients.name}</td>
               <td>{patients.description}</td>

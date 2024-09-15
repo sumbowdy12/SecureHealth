@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { createPatient } from '../lib/actions';
+import { updatePatient } from '@/app/lib/actions';
+import { Patient, PatientField } from '@/app/lib/definitions';
 
 // Define the shape of the form inputs
 interface FormInputs {
@@ -9,7 +10,13 @@ interface FormInputs {
   description: string;
 }
 
-export default function Form() {
+export default function EditForm({
+  patient,
+  patientfield,
+}: {
+  patient: Patient;
+  patientfield: PatientField[];
+}) {
   const [inputs, setInputs] = useState<Partial<FormInputs>>({}); // Partial makes all properties optional
 
   const handleChange = (event: { target: { name: string; value: string } }) => {
@@ -17,8 +24,10 @@ export default function Form() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
+  const updatePatientWithId = updatePatient.bind(null, patient.patientid);
+
   return (
-    <form action={createPatient} className="space-y-6 max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <form action={updatePatientWithId} className="space-y-6 max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
       {/* Patient Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -28,7 +37,7 @@ export default function Form() {
           type="text"
           id="name"
           name="name"
-          value={inputs.name || ''}
+          defaultValue={patient.name}
           onChange={handleChange}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
@@ -43,7 +52,7 @@ export default function Form() {
           type="number"
           id="age"
           name="age"
-          value={inputs.age || ''}
+          defaultValue={patient.age}
           onChange={handleChange}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
@@ -58,7 +67,7 @@ export default function Form() {
           id="description"
           name="description"
           rows={4}
-          value={inputs.description || ''}
+          defaultValue={patient.description}
           onChange={handleChange}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         ></textarea>
@@ -68,7 +77,7 @@ export default function Form() {
       <div>
         <input
           type="submit"
-          value="Create Patient"
+          value="Update Patient"
           className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>

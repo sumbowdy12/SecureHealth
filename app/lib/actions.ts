@@ -16,9 +16,10 @@ const FormSchema = z.object({
   });
    
   const CreatePatient = FormSchema.omit({ patientid: true, key: true });
+  const UpdatePatient = FormSchema.omit({ patientid:true , key: true });
 
-export async function createPatient(formData: FormData) {
-const { name, age, description } = CreatePatient.parse({
+  export async function createPatient(formData: FormData) {
+    const { name, age, description } = CreatePatient.parse({
         name: formData.get('name'),
         age: formData.get('age'),
         description: formData.get('description'),
@@ -28,4 +29,20 @@ const { name, age, description } = CreatePatient.parse({
     VALUES (${name}, ${age}, ${description}, '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef')
   `;
   redirect('/');
+    }
+
+    export async function updatePatient(patientid: string, formData: FormData) {
+      const { name, age, description } = UpdatePatient.parse({
+        name: formData.get('name'),
+        age: formData.get('age'),
+        description: formData.get('description')
+      });
+     
+      await sql`
+        UPDATE patients
+        SET name = ${name}, age = ${age}, description = ${description}
+        WHERE patientid = ${patientid}
+      `;
+     
+      redirect('/');
     }

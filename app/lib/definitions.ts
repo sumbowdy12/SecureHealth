@@ -5,3 +5,8 @@ export type Patient = {
     description: string;
     key: string;
 }
+
+export type PatientField = {
+    patientid: string;
+    name: string;
+  };
