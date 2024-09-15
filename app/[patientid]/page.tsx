@@ -1,5 +1,5 @@
 import { fetchPatientData, fetchPatients } from '@/app/lib/data';
-import Editform from './editform';
+import Viewform from './viewform';
  
 export default async function Page({ params }: { params: { patientid: string } }) {
     const id = params.patientid
@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { patientid: string } }
   return (
     <>
     <h1 className="text-4xl font-bold text-center text-indigo-600 mb-8">Secure Health</h1>
-    <Editform patient={patient} patientfield={patients}/>
+    <Viewform patient={patient} patientfield={patients}/>
     </>
   );
 }

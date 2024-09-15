@@ -3,19 +3,20 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { Patient
 
  } from './definitions';
+
+ //Fetch all patient data rows
 export async function fetchPatients() {
   noStore();
     try {
       const data = await sql<Patient>`SELECT * 
       FROM patients`;
-  
-      //console.log('Data fetch completed after 3 seconds.');
       return data.rows;
     } catch (error) {
       console.error('Database Error:', error);
       throw new Error('Failed to fetch data.');
     }
   }
+  //Fetch a patient data by their id
   export async function fetchPatientData(patient: string){
     noStore();
     try{

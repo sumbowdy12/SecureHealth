@@ -9,6 +9,7 @@ interface FormInputs {
   description: string;
 }
 
+//Creates a form for creating a patient
 export default function Form() {
   const [inputs, setInputs] = useState<Partial<FormInputs>>({}); // Partial makes all properties optional
 

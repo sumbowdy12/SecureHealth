@@ -1,16 +1,18 @@
-// utils/crypto.js
-//
-import CryptoJS from "crypto-js";
+//Function responsible for decryption and encryption using aes256.
+// Requires a randomly generated key
+var crypto = require('crypto')
 
-const key = CryptoJS.enc.Hex.parse('1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef');
-const iv = CryptoJS.enc.Hex.parse('fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321');
-
-export const encryptData = (data) => {
-  return CryptoJS.AES.encrypt(JSON.stringify(data), key,{iv:iv}).toString();
+export const encryptData = (plaintext, key) => {
+    var mykey = crypto.createCipher('aes-256-cbc', key);
+    var mystr = mykey.update(plaintext, 'utf8', 'hex')
+    mystr += mykey.final('hex');
+  return mystr
 };
 
-export const decryptData = (ciphertext) => {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, key,{iv:iv});
-  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+export const decryptData = (ciphertext, key) => {
+  var mykey = crypto.createDecipher('aes-256-cbc', key);
+  var mystr = mykey.update(ciphertext, 'hex', 'utf8')
+  mystr += mykey.final('utf8');
+  return mystr;
 };
 

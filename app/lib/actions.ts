@@ -2,15 +2,15 @@
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { redirect } from 'next/navigation';
-
+import { encryptData } from '../utils/crypto';
+import { fetchPatientData } from './data';
+var crypto = require('crypto')
 const FormSchema = z.object({
     patientid: z.string({
         invalid_type_error: 'Please select a patient.',
     }),
     name: z.string(),
-    age: z.coerce
-    .number()
-    .gt(0, { message: 'Please enter an appropriate age' }),
+    age: z.string(),
     description: z.string(),
     key: z.string(),
   });
@@ -18,24 +18,28 @@ const FormSchema = z.object({
   const CreatePatient = FormSchema.omit({ patientid: true, key: true });
   const UpdatePatient = FormSchema.omit({ patientid:true , key: true });
 
+  //Create new patient while also generating a secret key for that patient
   export async function createPatient(formData: FormData) {
+    var key = crypto.randomBytes(64).toString('hex');
     const { name, age, description } = CreatePatient.parse({
-        name: formData.get('name'),
-        age: formData.get('age'),
-        description: formData.get('description'),
+        name: encryptData(formData.get('name'),key),
+        age: encryptData(formData.get('age'),key),
+        description: encryptData(formData.get('description'),key),
     });
     await sql`
     INSERT INTO patients (name, age, description, key)
-    VALUES (${name}, ${age}, ${description}, '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef')
+    VALUES (${name}, ${age}, ${description}, ${key})
   `;
-  redirect('/');
+  redirect('/doctor');
     }
 
-    export async function updatePatient(patientid: string, formData: FormData) {
+  //Update a patient while using their already assigned key to encrypt/decrypt
+  export async function updatePatient(patientid: string, formData: FormData) {
+      var key = (await fetchPatientData(patientid)).key;
       const { name, age, description } = UpdatePatient.parse({
-        name: formData.get('name'),
-        age: formData.get('age'),
-        description: formData.get('description')
+        name: encryptData(formData.get('name'),key),
+        age: encryptData(formData.get('age'),key),
+        description: encryptData(formData.get('description'),key),
       });
      
       await sql`
@@ -44,5 +48,10 @@ const FormSchema = z.object({
         WHERE patientid = ${patientid}
       `;
      
-      redirect('/');
+      redirect('/doctor');
+    }
+  //Delete a patient from the database using their id
+  export async function deletePatient(id: string) {
+      await sql`DELETE FROM patients WHERE patientid = ${id}`;
+      redirect('/doctor');
     }
