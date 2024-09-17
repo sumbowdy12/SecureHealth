@@ -4,7 +4,8 @@ import { sql } from '@vercel/postgres';
 import { redirect } from 'next/navigation';
 import { encryptData } from '../utils/crypto';
 import { fetchPatientData } from './data';
-var crypto = require('crypto')
+
+var crypto = require('crypto') //Import Crypto library
 const FormSchema = z.object({
     patientid: z.string({
         invalid_type_error: 'Please select a patient.',
@@ -20,7 +21,10 @@ const FormSchema = z.object({
 
   //Create new patient while also generating a secret key for that patient
   export async function createPatient(formData: FormData) {
+    //Generate a random key
     var key = crypto.randomBytes(64).toString('hex');
+
+    //Get the data from the input
     const { name, age, description } = CreatePatient.parse({
         name: encryptData(formData.get('name'),key),
         age: encryptData(formData.get('age'),key),

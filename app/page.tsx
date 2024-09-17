@@ -1,4 +1,3 @@
-import { decryptData, encryptData } from "./utils/crypto";
 import HealthTable from "./healthTable";
 
 //Home Page layout displaying encrypted data

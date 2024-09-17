@@ -8,15 +8,14 @@ interface FormInputs {
   description: string;
 }
 //View patient data read only
-export default function ViewForm({
+export default async function ViewForm({
   patient,
   patientfield,
 }: {
   patient: Patient;
   patientfield: PatientField[];
 }) {
-  const key = patient.key;
-
+  var key = patient.key
   return (
     <div className="container mx-auto my-8 max-w-md p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-indigo-600 mb-6 text-center">
