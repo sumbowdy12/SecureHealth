@@ -21,7 +21,7 @@ export default async function decryptedhealthTable(){
         <tbody>
           {patients.map((patients) => (
             <tr key={patients.patientid}>
-              <td><Link href={ "/" + patients.patientid + "/edit"}>{patients.patientid}</Link></td>
+              <td><Link href={ "/view/" + patients.patientid + "/edit"}>{patients.patientid}</Link></td>
               <td>{decryptData(patients.age,patients.key)}</td>
               <td>{decryptData(patients.name,patients.key)}</td>
               <td>{decryptData(patients.description,patients.key)}</td>
